@@ -21,23 +21,53 @@ public class Main {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-//        TownManager townManager = new TownManager(houses);
         TownManager townManager =TownManager.getInstance("Sang",houses);
-        menu(townManager);
+        menuAll(townManager);
 
     }
-//    menu lựa chọn
-    public static void menu(TownManager manager){
-        System.out.println("Enter 1: Thêm nhà mới: ");
-        System.out.println("Enter 2: Thêm mới hộ gia đình vào nhà: ");
-        System.out.println("Enter 3: Hiển thị danh sách nhà ở: ");
-        System.out.println("Enter 4: Add Person at Households: ");
-        System.out.println("Enter 5: Add Person at Households: ");
-        System.out.println("Enter 7: exit: ");
+//    Menu Quản lý chính
+    public static void menuAll(TownManager manager){
+
         Scanner scanner = new Scanner(System.in);
+        boolean check = true;
+        do {
+            System.out.println("Enter 1: Quản lý nhà ở ");
+            System.out.println("Enter 2: Quản lý Hộ Dân trong Khu phố ");
+            System.out.println("Enter 3: Thoát  ");
+            System.out.println("Nhập vào lựa chọn của bạn: ");
+            int choice = scanner.nextInt();
+            switch (choice){
+                case 1:
+                {
+                    menuManagerHouse(manager);
+                    break;
+                }
+                case 2:
+                {
+                    menuManagerHouseHoldr(manager);
+                    break;
+                }
+                case 3:
+                {
+                    check=  false;
+                    break;
+                }
+            }
+
+        }while (check);
+
+    }
+//    Quản lý nhà ở
+    public static void menuManagerHouse(TownManager manager){
+        System.out.println("Enter 1: Thêm mới nhà: ");
+        System.out.println("Enter 2: Xoá nhà: ");
+        System.out.println("Enter 3: Sửa địa chỉ nhà: ");
+        System.out.println("Enter 4: Danh sách căn nhà chưa có người ở: ");
+        System.out.println("Enter 5: Trở về Menu chính ");
         int number = 0;
         boolean check = true;
         do {
+            Scanner scanner = new Scanner(System.in);
             System.out.println("Nhập vào lựa chọn của bạn: ");
             int choice = scanner.nextInt();
             switch (choice){
@@ -56,6 +86,71 @@ public class Main {
                             e.printStackTrace();
                         }
                     }
+                  break;
+                }
+                case 2:
+                {
+                        Scanner scanner1 = new Scanner(System.in);
+                        System.out.println("Nhập địa chỉ nhà muốn xoá:");
+                        String address = scanner1.nextLine();
+                        House house = manager.findHouse(address);
+                        try {
+                            manager.deleteHouse(house);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+
+                        }
+                    break;
+                }
+                case 3:
+                {
+
+                    break;
+                }
+                case 4:
+                {
+                    List<String> house = manager.listHouseNoPeople();
+                    manager.showHouse(house);
+                    break;
+                }
+                case 5:
+                {
+                    check = false;
+                    break;
+                }
+            }
+        }while (check);
+    }
+//    Quản lý hộ dân
+    public static void menuManagerHouseHoldr(TownManager manager){
+        System.out.println("Enter 1: Thêm nhà mới: ");
+        System.out.println("Enter 2: Nhập thông tin của Hộ dân mới chuyển đến: ");
+        System.out.println("Enter 3: Hiển thị danh sách hộ dân đang sinh sống: ");
+        System.out.println("Enter 4: Add Person at Households: ");
+        System.out.println("Enter 5: Add Person at Households: ");
+        System.out.println("Enter 7: Trở về menu chính ");
+        Scanner scanner = new Scanner(System.in);
+        int number = 0;
+        boolean check = true;
+        do {
+            System.out.println("Nhập vào lựa chọn của bạn: ");
+            int choice = scanner.nextInt();
+            switch (choice){
+                case 1:
+                {
+//                    System.out.println("Nhập số lượng ngôi nhà bạn muốn thêm mới: ");
+//                    Scanner scanner1 = new Scanner(System.in);
+//                    number = scanner1.nextInt();
+//                    int [] arr = new int[number];
+//                    for (int i = 0; i< arr.length;i++){
+//                        System.out.println("Nhập địa chỉ nhà thứ "+(i+1));
+//                        House house = createNewHouse();
+//                        try {
+//                            manager.addHouse(house);
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
                     break;
                 }
                 case 2:
@@ -85,7 +180,6 @@ public class Main {
                         }else {
                             System.out.println("Nhà đã có người ở!");
                         }
-
                     }else {
                         System.err.println("không có căn hộ trên!");
                     }
@@ -94,11 +188,10 @@ public class Main {
                 case 3:
                 {
                     if (manager.getHouses().size()>0){
-                        manager.showAll();
+                        manager.showHouseHoollds();
                     }else {
                         System.err.println("Không có hộ dân nào được quản lý!");
                     }
-
                     break;
                 }
 

@@ -42,10 +42,9 @@ public class Person implements Serializable {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "name= " + name +
-                " age= " + age +
-                " gender= " + gender +
-                '}';
+        return " name: " + name +
+                " age: " + age +
+                " gender: " + gender+
+                "\n\t\t\t";
     }
 }

@@ -57,11 +57,10 @@ public class House implements Serializable {
 
     @Override
     public String toString() {
-        return "House{" +
-                "householder='" + householder +
-                ", address='" + address +
-                ", numberOfPeople=" + numberOfPeople +"\n"+
-                "personList=" + personList +
-                '}';
+        return "Hộ Dân * " +
+                "Chủ hộ: " + householder +
+                ", address: " + address +
+                ", numberOfPeople: " + numberOfPeople +"\n"+
+                "- Thành viên trong hộ: \n\t\t\t" + personList;
     }
 }

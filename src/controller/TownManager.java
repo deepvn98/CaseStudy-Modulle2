@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.javafx.iio.gif.GIFImageLoaderFactory;
 import model.House;
 import model.Person;
 import storage.FileHouse;
@@ -52,17 +53,30 @@ public class TownManager {
     public void addPersonAtHome(String name, House house, int number, Person person,List<Person> personList) throws IOException {
         house.setHouseholder(name);
         house.setNumberOfPeople(number);
-//        List<Person> personList = new ArrayList<>();
+//    List<Person> personList = new ArrayList<>();
         personList.add(person);
         house.setPersonList(personList);
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile(houses);
     }
-//    Thêm Căn hộ vào danh sách căn hộ
+//    Thêm nhà vào danh sách Nhà
     public void addHouse(House house) throws IOException {
         houses.add(house);
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile(houses);
+    }
+//    Xoá nhà không quản lý nữa
+    public void deleteHouse(House house) throws IOException {
+        if (house!=null){
+            if (house.getHouseholder()==null){
+                houses.remove(house);
+                System.out.println("Đã xoá!");
+                FileHouse fileHouse = FileHouse.getInstance();
+                fileHouse.writeFile(houses);
+            }
+        }else {
+            System.err.println("Bạn không quản lý Ngôi nhà này");
+        }
     }
 //    Tìm nhà theo số nhà
     public House findHouse(String address){
@@ -75,10 +89,32 @@ public class TownManager {
         }return null;
     }
 //    Hiển thị toàn bộ danh sách hộ khu dân cư
-    public void showAll(){
-        for (House h:houses
-             ) {
-            System.out.println(h.toString());
+    public void showHouseHoollds(){
+        for (int i = 0; i < houses.size();i++){
+            if (houses.get(i).getHouseholder()!= null){
+                System.out.println(houses.get(i).toString());
+            }
+        }
+    }
+//  Danh sách nhà chưa có người ở
+    public List<String> listHouseNoPeople(){
+        List<String> strings = new ArrayList<>();
+        for (int i = 0; i < houses.size();i++){
+            if (houses.get(i).getHouseholder()== null){
+                String number = houses.get(i).getAddress();
+//                System.out.println("Số nhà: "+ number);
+                strings.add(number);
+            }
+        }return strings;
+    }
+    public void showHouse(List<String> list){
+        if (list.size()>0){
+            for (String s:list
+                 ) {
+                System.out.println("Số nhà: "+ s);
+            }
+        }else {
+            System.err.println("Hiện tại không có nhà bỏ trống: ");
         }
     }
 }
