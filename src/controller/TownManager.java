@@ -1,6 +1,4 @@
 package controller;
-
-import com.sun.javafx.iio.gif.GIFImageLoaderFactory;
 import model.House;
 import model.Person;
 import storage.FileHouse;
@@ -14,12 +12,12 @@ public class TownManager {
     private List<House> houses = new ArrayList<>();
     private static TownManager INSTANCE;
 
-    public TownManager(String name, List<House> houses) {
+    private TownManager(String name, List<House> houses) {
         this.name = name;
         this.houses = houses;
     }
 
-    public TownManager() {
+    private TownManager() {
     }
     public static TownManager getInstance(String name, List<House>houses){
         if (INSTANCE == null){
@@ -42,10 +40,6 @@ public class TownManager {
         this.houses = houses;
     }
 
-//    public static TownManager getINSTANCE(String sáng, List<House> houses) {
-//        return INSTANCE;
-//    }
-
     public static void setINSTANCE(TownManager INSTANCE) {
         TownManager.INSTANCE = INSTANCE;
     }
@@ -53,13 +47,12 @@ public class TownManager {
     public void addPersonAtHome(String name, House house, int number, Person person,List<Person> personList) throws IOException {
         house.setHouseholder(name);
         house.setNumberOfPeople(number);
-//    List<Person> personList = new ArrayList<>();
         personList.add(person);
         house.setPersonList(personList);
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile(houses);
     }
-//    Thêm nhà vào danh sách Nhà
+//    Thêm nhà Trống cần quản lý vào danh sách Nhà
     public void addHouse(House house) throws IOException {
         houses.add(house);
         FileHouse fileHouse = FileHouse.getInstance();
@@ -88,7 +81,7 @@ public class TownManager {
             }
         }return null;
     }
-//    Hiển thị toàn bộ danh sách hộ khu dân cư
+//    Hiển thị toàn bộ danh sách hộ khu dân cư có người ở
     public void showHouseHoollds(){
         for (int i = 0; i < houses.size();i++){
             if (houses.get(i).getHouseholder()!= null){
