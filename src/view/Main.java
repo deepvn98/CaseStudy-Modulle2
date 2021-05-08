@@ -34,6 +34,7 @@ public class Main {
         do {System.out.println("Enter 1: Quản lý nhà ở ");
             System.out.println("Enter 2: Quản lý Hộ Dân trong Khu phố ");
             System.out.println("Enter 3: Thoát  ");
+//Tai sao không có vòng lặp mà nại bị lặp vô hạn????????????
             try {
                 System.out.println("Nhập vào lựa chọn của bạn: ");
                 choice=scanner.nextInt();
@@ -41,6 +42,7 @@ public class Main {
                 System.err.println("Xảy ra ngoại lệ, Mời nhập nại!");
                 choice = 0;
             }
+
             switch (choice){
                 case 1:
                 {
@@ -112,15 +114,19 @@ public class Main {
             switch (choice) {
                 case 1: {
                     Scanner scanner1 = new Scanner(System.in);
+//                    Bị lặp vô hạn ???????????????????????????????????
                     while (true) {
                         System.out.println("Nhập số lượng ngôi nhà bạn muốn thêm mới: ");
                         try {
                             number = scanner1.nextInt();
+                            if (number<0){
+                                throw new Exception();
+                            }
                             break;
-                        } catch (InputMismatchException e) {
-                            System.out.println("sự lựa chọn sai! Mời bạn chọn lại!");
+//                        } catch (InputMismatchException e) {
+//                            System.out.println("sự lựa chọn sai! Mời bạn chọn lại!");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            System.err.println("Vào Ngoại lệ! Mời bạn chọn nại!");
                         }
                     }
                     int[] arr = new int[number];
