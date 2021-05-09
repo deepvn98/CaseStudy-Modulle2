@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.javafx.iio.gif.GIFImageLoaderFactory;
 import controller.TownManager;
 import model.House;
 import model.Person;
@@ -25,7 +26,6 @@ public class Main {
         TownManager townManager = TownManager.getInstance("Sang", houses);
         menuManagerPeople(townManager);
         menuAll(townManager);
-
     }
 
     //    Menu Quản lý chính
@@ -60,6 +60,7 @@ public class Main {
             }
         }
     }
+
 
     //    Quản lý nhà ở
     public static void menuManagerHouse(TownManager manager) {
@@ -193,6 +194,7 @@ public class Main {
         while (choice != 6);
     }
 
+
     //    Quản lý hộ dân
     public static void menuManagerHouseHoldr(TownManager manager) {
 
@@ -324,7 +326,7 @@ public class Main {
                             System.out.println("Nhập tên người muốn xoá khổi hộ: ");
                             Scanner scanner2 = new Scanner(System.in);
                             String newName = scanner2.nextLine();
-                            Person person = manager.getPersonByName(house, newName);
+                            Person person = manager.checkPersonByName(house, newName);
                             if (person != null) {
                                 try {
                                     manager.deletePersonInHouse(house, person);
@@ -347,6 +349,8 @@ public class Main {
         } while (check);
 
     }
+
+
 //    Menu Quản lý Con người
     public static void menuManagerPeople(TownManager manager){
         System.out.println("__________Danh sách lựa chọn________");
@@ -373,6 +377,41 @@ public class Main {
                 }
                 case 2:
                 {
+                    Scanner scanner = new Scanner(System.in);
+                    System.out.println("Nhập tên người cần lấy thông tin: ");
+                    String name = scanner.nextLine();
+                    List<House> houses1 = manager.listHousHavePeople();
+                    if (houses1.size()>0){
+                        List<House> houses2 = manager.getInforPersonByName(houses1,name);
+                        if (houses2.size()>0){
+                            System.out.printf("\n\t\t\t\t_________%-60s","Thông tin người cần tìm________");
+                            System.out.println();
+                            System.out.printf("\n\t\t\t\t%-30s %-40s","Địa chỉ","Thông tin");
+                            for (int i =0; i< houses2.size();i++){
+                                String address = houses2.get(i).getAddress();
+                                Person person = houses2.get(i).getPersonList().get(i);
+                                System.out.printf("\n\t\t\t\t%-20s %-50s",address,person.toString());
+                            }
+                            System.out.println();
+                            System.out.println("\t\t\t\t\t______________________________");
+                            System.out.println();
+
+                        }else {
+                            System.err.println("Không có người cần tìm trong khu phố");
+                        }
+                    }else {
+                        System.err.println("Không có người cần tìm trong khu phố");
+                    }
+
+
+
+
+
+
+
+
+
+//                    manager.
                     break;
                 }
                 case 3:
@@ -392,7 +431,6 @@ public class Main {
     //    Tạo mới một nhà trống không người
     public static House createNewHouse() {
         Scanner scanner = new Scanner(System.in);
-//        System.out.println("Nhập địa chỉ nhà: ");
         String address = scanner.nextLine();
         House house = new House(address);
         return house;

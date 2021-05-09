@@ -44,7 +44,7 @@ public class Person implements Serializable {
     public String toString() {
         return " name: " + name +
                 ", age: " + age +
-                ", gender: " + gender+
+                ", gender: " + gender +
                 "\n\t\t\t";
     }
 }

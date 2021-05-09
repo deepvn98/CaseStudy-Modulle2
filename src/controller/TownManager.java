@@ -1,5 +1,6 @@
 package controller;
 
+import com.sun.scenario.effect.impl.prism.ps.PPSBlend_ADDPeer;
 import model.House;
 import model.Person;
 import storage.FileHouse;
@@ -57,7 +58,8 @@ public class TownManager {
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile(houses);
     }
-//Thêm thành viên vào hộ gia đình
+
+    //Thêm thành viên vào hộ gia đình
     public void addPersonInHouseHavePerson(Person person, House house) throws IOException {
         house.getPersonList().add(person);
         int number = house.getPersonList().size();
@@ -77,6 +79,7 @@ public class TownManager {
     }
 
     //    Xoá thành viên trong hộ
+
     public void deletePersonInHouse(House house, Person person) throws IOException {
         List<Person> personList = house.getPersonList();
         int size = personList.size();
@@ -109,7 +112,7 @@ public class TownManager {
     }
 
     //    Kiểm tra người này có ở trong nhà cho trước hay không? tìm theo tên, trả về người nếu có!
-    public Person getPersonByName(House house, String name) {
+    public Person checkPersonByName(House house, String name) {
         Person person = null;
         List<Person> personList = house.getPersonList();
         for (int i = 0; i < personList.size(); i++) {
@@ -119,6 +122,16 @@ public class TownManager {
             }
         }
         return null;
+    }
+
+//    Tìm người trong khu phố, bằng tên, tìm trong danh sách hộ dân đang sinh sống
+    public List<House> getInforPersonByName(List<House> houses2,String name){
+        List<House> houses1 = new ArrayList<>();
+        for (int i = 0;i<houses2.size();i++){
+            if (houses2.get(i).getPersonList().get(i).getName().equalsIgnoreCase(name)){
+                houses1.add(houses2.get(i));
+            }
+        }return houses1;
     }
 
     //    Lấy danh sách nhà có hộ dân sinh sống
@@ -166,6 +179,7 @@ public class TownManager {
         }
         return null;
     }
+
     //    Kiểm tra nhà có người hay không?
     public boolean checkHouse(House house) {
         boolean check = false;
@@ -195,6 +209,7 @@ public class TownManager {
             }
         }
     }
+
 //    Hiển thị danh sách người dân thuộc diện quản lý
     public void showPerson(List<Person> personList){
         System.out.println("\t\t_____Danh sách người dân trong khu phố_____");
@@ -215,10 +230,12 @@ public class TownManager {
         System.out.printf("\n\t\t\t\t\t\t%-20s %-20s","STT","Địa chỉ:");
        for (int i =0; i< houses.size(); i++){
            String address = houses.get(i).getAddress();
-           System.out.printf("\n\t\t\t\t\t\t%-20s %-20s",(i+1),address);
+           int sothutu = i + 1;
+           System.out.printf("\n\t\t\t\t\t\t%-20s %-20s", sothutu,address);
        }
         System.out.println();
     }
+
     //    Hiển thị danh sách nhà chưa có người ở
     public void showHouse(List<House> list) {
         if (list.size() > 0) {
