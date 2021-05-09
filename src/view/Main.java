@@ -3,14 +3,13 @@ package view;
 import controller.TownManager;
 import model.House;
 import model.Person;
+import storage.ComparatorWithAddress;
+import storage.ComparatorWithPerson;
 import storage.FileHouse;
 
 import java.io.IOException;
 import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,6 +23,7 @@ public class Main {
             e.printStackTrace();
         }
         TownManager townManager = TownManager.getInstance("Sang", houses);
+        menuManagerPeople(townManager);
         menuAll(townManager);
 
     }
@@ -32,7 +32,7 @@ public class Main {
     public static void menuAll(TownManager manager) {
         int choice = 0;
         while (choice != 3) {
-            System.err.println("---------Danh sách lựa chọn________");
+            System.out.println("---------Danh sách lựa chọn________");
             System.out.println("Enter 1: Quản lý nhà ở ");
             System.out.println("Enter 2: Quản lý Hộ Dân trong Khu phố ");
             System.out.println("Enter 3: Thoát  ");
@@ -66,12 +66,13 @@ public class Main {
         int number = 0;
         int choice = 0;
         do {
-            System.err.println("---------Danh sách lựa chọn________");
+            System.out.println("---------Danh sách lựa chọn________");
             System.out.println("Enter 1: Thêm mới nhà: ");
             System.out.println("Enter 2: Xoá nhà: ");
             System.out.println("Enter 3: Sửa địa chỉ nhà: ");
             System.out.println("Enter 4: Danh sách căn nhà chưa có người ở: ");
-            System.out.println("Enter 5: Trở về Menu chính ");
+            System.out.println("Enter 5: Danh sách Nhà thuộc diện quản lý: ");
+            System.out.println("Enter 6: Trở về Menu chính ");
             try {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Nhập vào lựa chọn của bạn: ");
@@ -172,16 +173,24 @@ public class Main {
                     break;
                 }
                 case 4: {
-                    List<String> house = manager.listHouseNoPeople();
-                    manager.showHouse(house);
+                    List<House> houses1 =  manager.listHouseNoPeople();
+                    Collections.sort(houses1, new ComparatorWithAddress());
+                    manager.showHouse(houses1);
                     break;
                 }
                 case 5: {
+                    System.out.println("\t\t\t_______Danh sách Địa chỉ toàn bộ ngôi nhà thuộc diện quản lý_______");
+                    Collections.sort(manager.getHouses(), new ComparatorWithAddress());
+                    manager.showAllHouse();
+                    break;
+                }
+                case 6:
+                {
                     break;
                 }
             }
         }
-        while (choice != 5);
+        while (choice != 6);
     }
 
     //    Quản lý hộ dân
@@ -190,8 +199,7 @@ public class Main {
         int choice;
         boolean check = true;
         do {
-            System.out.println();
-            System.err.println("---------Danh sách lựa chọn________");
+            System.out.println("---------Danh sách lựa chọn________");
             System.out.println("Enter 1: Nhập thông tin của Hộ dân mới chuyển đến: ");
             System.out.println("Enter 2: Hiển thị danh sách hộ dân đang sinh sống: ");
             System.out.println("Enter 3: Xoá Hộ gia đình không Còn thuộc diện quản lý");
@@ -258,7 +266,11 @@ public class Main {
                     String address = scanner1.nextLine();
                     House house = manager.findHouse(address);
                     if (manager.checkHouse(house)){
-                        manager.getHouses().remove(house);
+                        try {
+                            manager.deleteHouseHolds(house);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }else {
                         System.err.println("Nhà Đang trống không có người sử dụng, Kiểm tra lại");
                     }
@@ -334,6 +346,47 @@ public class Main {
             }
         } while (check);
 
+    }
+//    Menu Quản lý Con người
+    public static void menuManagerPeople(TownManager manager){
+        System.out.println("__________Danh sách lựa chọn________");
+        System.out.println("Enter 1: Danh sách người Dân Trong khu dân cư: ");
+        System.out.println("Enter 2: Tìm thông tin người theo tên: ");
+        System.out.println("Enter 3: Danh sách người cùng tuổi");
+        System.out.println("Enter 4: Trở về Menu chính: ");
+        int choice;
+        do {
+            try {
+                Scanner scanner = new Scanner(System.in);
+                choice = scanner.nextInt();
+            }catch (Exception e){
+                System.err.println("Nhập vào một trong những lựa chọn phía trên,Mời bạn nhập lại!");
+                choice=0;
+            }
+            switch (choice){
+                case 1:
+                {
+                    List<Person> personList = manager.getPersonInHouse();
+                    Collections.sort(personList,new ComparatorWithPerson());
+                    manager.showPerson(personList);
+                    break;
+                }
+                case 2:
+                {
+                    break;
+                }
+                case 3:
+                {
+                    break;
+                }
+                case 4:
+                {
+                    break;
+                }
+
+            }
+
+        }while (choice!=4);
     }
 
     //    Tạo mới một nhà trống không người

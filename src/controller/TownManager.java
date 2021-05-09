@@ -57,10 +57,8 @@ public class TownManager {
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile(houses);
     }
-
+//Thêm thành viên vào hộ gia đình
     public void addPersonInHouseHavePerson(Person person, House house) throws IOException {
-//        int number1 = house.getNumberOfPeople();
-//        int number2 = number1+numberPeople;
         house.getPersonList().add(person);
         int number = house.getPersonList().size();
         house.setNumberOfPeople(number);
@@ -73,6 +71,7 @@ public class TownManager {
         house.setHouseholder(null);
         house.setNumberOfPeople(0);
         house.setPersonList(null);
+        System.err.println("Đã xoá");
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile(houses);
     }
@@ -108,15 +107,10 @@ public class TownManager {
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile(houses);
     }
-//    Xoá nhà không quản lý nữa
-
-
-
 
     //    Kiểm tra người này có ở trong nhà cho trước hay không? tìm theo tên, trả về người nếu có!
     public Person getPersonByName(House house, String name) {
         Person person = null;
-        ;
         List<Person> personList = house.getPersonList();
         for (int i = 0; i < personList.size(); i++) {
             if (personList.get(i).getName().equalsIgnoreCase(name)) {
@@ -133,25 +127,34 @@ public class TownManager {
         for (int i = 0; i < houses.size(); i++) {
             if (houses.get(i).getHouseholder() != null) {
                 House house = houses.get(i);
-//                System.out.println("Số nhà: "+ number);
                 houses1.add(house);
             }
         }
         return houses1;
     }
 
-    //  Danh sách nhà chưa có người ở
-    public List<String> listHouseNoPeople() {
-        List<String> strings = new ArrayList<>();
+//    Danh sách nhà ở không có người ở
+    public List<House> listHouseNoPeople() {
+        List<House> houses1 = new ArrayList<>();
         for (int i = 0; i < houses.size(); i++) {
             if (houses.get(i).getHouseholder() == null) {
-                String number = houses.get(i).getAddress();
-//                System.out.println("Số nhà: "+ number);
-                strings.add(number);
+                House house = houses.get(i);
+                houses1.add(house);
             }
         }
-        return strings;
+        return houses1;
     }
+//    Danh sách người dân trong khu
+    public List<Person> getPersonInHouse(){
+        List<Person> personList = new ArrayList<>();
+        for (int i =0; i< houses.size();i++){
+            if (houses.get(i).getHouseholder()!=null){
+                List<Person> personList1 = houses.get(i).getPersonList();
+                personList.addAll(personList1);
+            }
+        }return personList;
+    }
+
     //    Tìm nhà theo số nhà
     public House findHouse(String address) {
         House house = null;
@@ -188,38 +191,45 @@ public class TownManager {
         if (houses1.size() > 0) {
             for (int i = 0; i < houses1.size(); i++) {
                 number += 1;
-                System.err.println("+> Hộ thứ " + number + houses1.get(i).toString());
+                System.out.println("+> Hộ thứ " + number + houses1.get(i).toString());
             }
         }
     }
-//    Hiển thị danh sách toàn bộ nhà theo địa chỉ thuộc diện quản lý
+//    Hiển thị danh sách người dân thuộc diện quản lý
+    public void showPerson(List<Person> personList){
+        System.out.println("\t\t_____Danh sách người dân trong khu phố_____");
+        System.out.println();
+        System.out.printf("\t\t\t%-20s %-20s %-20s","Tên","Tuổi","Gới Tính");
+        for (int i = 0; i< personList.size();i++){
+            String name = personList.get(i).getName();
+            String gender = personList.get(i).getGender();
+            int age = personList.get(i).getAge();
+            System.out.printf("\n\t\t\t%-20s %-20d %-20s",name,age,gender);
+        }
+        System.out.println();
 
-    skjdfhshchssad
-    ádsadsad
-            ádasd
-    đâsd
-                    ádasdsa
-
-
-
-    public void showAllHouse(){
-        System.out.println("\t\t\tDanh sách nhà ở thuộc diện quản lý sắp xếp theo địa chỉ.");
-       for (int i =0; i< houses.size(); i++){
-           String address = houses.get(i).getAddress();
-           System.out.println(address);
-       }
     }
 
-
+//    Hiển thị danh sách toàn bộ nhà theo địa chỉ thuộc diện quản lý
+    public void showAllHouse(){
+        System.out.printf("\n\t\t\t\t\t\t%-20s %-20s","STT","Địa chỉ:");
+       for (int i =0; i< houses.size(); i++){
+           String address = houses.get(i).getAddress();
+           System.out.printf("\n\t\t\t\t\t\t%-20s %-20s",(i+1),address);
+       }
+        System.out.println();
+    }
     //    Hiển thị danh sách nhà chưa có người ở
-    public void showHouse(List<String> list) {
+    public void showHouse(List<House> list) {
         if (list.size() > 0) {
-            for (String s : list
-            ) {
-                System.out.println("Số nhà: " + s);
+            System.out.printf("\n\t\t\t\t\t\t%-20s %-20s","STT","Địa chỉ:");
+            for (int i = 0; i<list.size();i++){
+                String address = list.get(i).getAddress();
+                System.out.printf("\n\t\t\t\t\t\t%-20s %-20s",(i+1),address);
             }
         } else {
             System.err.println("Hiện tại không có nhà bỏ trống: ");
         }
+        System.out.println();
     }
 }
