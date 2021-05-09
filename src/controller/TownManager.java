@@ -1,6 +1,5 @@
 package controller;
 
-import com.sun.scenario.effect.impl.prism.ps.PPSBlend_ADDPeer;
 import model.House;
 import model.Person;
 import storage.FileHouse;
@@ -64,6 +63,7 @@ public class TownManager {
         house.getPersonList().add(person);
         int number = house.getPersonList().size();
         house.setNumberOfPeople(number);
+        System.out.println("Thêm thành công");
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile(houses);
     }
@@ -124,16 +124,17 @@ public class TownManager {
         return null;
     }
 
-//    Tìm người trong khu phố, bằng tên, tìm trong danh sách hộ dân đang sinh sống
-    public List<House> getInforPersonByName(List<House> houses2,String name){
-        List<House> houses1 = new ArrayList<>();
-        for (int i = 0;i<houses2.size();i++){
-            if (houses2.get(i).getPersonList().get(i).getName().equalsIgnoreCase(name)){
-                houses1.add(houses2.get(i));
+////    Tìm người trong khu phố, bằng tên, tìm trong danh sách hộ dân đang sinh sống
+    public List<Person> getInforPersonByName(List<Person>personList ,String name){
+        List<Person> personList1 = new ArrayList<>();
+        for (int i =0; i< personList.size();i++){
+            if (personList.get(i).getName().equalsIgnoreCase(name)){
+                Person person= personList.get(i);
+                personList1.add(person);
             }
-        }return houses1;
-    }
+        }return personList1;
 
+    }
     //    Lấy danh sách nhà có hộ dân sinh sống
     public List<House> listHousHavePeople() {
         List<House> houses1 = new ArrayList<>();
@@ -157,6 +158,7 @@ public class TownManager {
         }
         return houses1;
     }
+
 //    Danh sách người dân trong khu
     public List<Person> getPersonInHouse(){
         List<Person> personList = new ArrayList<>();
@@ -178,6 +180,18 @@ public class TownManager {
             }
         }
         return null;
+    }
+
+//    Danh sách người có tuổi nhập vào từ bàn phím
+    public List<Person> getInforPersonByAge(List<Person> personList, int age){
+        List<Person> personList1 = new ArrayList<>();
+        for (int i = 0; i<personList.size();i++){
+            if (personList.get(i).getAge() == age){
+                     Person person = personList.get(i);
+                     personList1.add(person);
+            }
+        }
+        return personList1;
     }
 
     //    Kiểm tra nhà có người hay không?
