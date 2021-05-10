@@ -17,8 +17,8 @@ public class FileHouse {
             INSTACE = new FileHouse();
         }return INSTACE;
     }
-    public void writeFile(List<House> houses) throws IOException {
-        File file = new File("house.dat");
+    public void writeFile(String pathname,List<House> houses) throws IOException {
+        File file = new File(pathname);
         if (!file.exists()){
             file.createNewFile();
         }
@@ -28,6 +28,7 @@ public class FileHouse {
         objectOutputStream.close();
         fileOutputStream.close();
     }
+
     public List<House> readFile(String f) throws IOException, ClassNotFoundException {
         File file = new File(f);
         if (!file.exists()){
@@ -42,5 +43,12 @@ public class FileHouse {
         }else {
             return new ArrayList<>();
         }
+    }
+    public File createNewFile() throws IOException {
+        File file = new File("house.dat");
+        if (!file.exists()){
+            file.createNewFile();
+        }
+        return file;
     }
 }

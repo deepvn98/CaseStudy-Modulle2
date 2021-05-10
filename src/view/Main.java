@@ -1,15 +1,16 @@
 package view;
 
-import com.sun.javafx.iio.gif.GIFImageLoaderFactory;
+import controller.LoginManager;
 import controller.TownManager;
+import model.CheckFormat;
 import model.House;
+import model.Login;
 import model.Person;
 import storage.ComparatorWithAddress;
 import storage.ComparatorWithPerson;
 import storage.FileHouse;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.*;
 
 public class Main {
@@ -35,7 +36,7 @@ public class Main {
             System.out.println("Enter 1: Quản lý nhà ở: ");
             System.out.println("Enter 2: Quản lý Hộ Dân trong Khu phố: ");
             System.out.println("Enter 3: Quản lý Thông tin người dân : ");
-            System.out.println("Enter 5: Thoát:  ");
+            System.out.println("Enter 4: Thoát:  ");
             try {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Nhập vào lựa chọn của bạn: ");
@@ -58,13 +59,13 @@ public class Main {
                     menuManagerPeople(manager);
                     break;
                 }
-                case 4:
-                {
+                case 4: {
                     break;
                 }
             }
         }
     }
+
     //    Quản lý nhà ở
     public static void menuManagerHouse(TownManager manager) {
         int number = 0;
@@ -117,23 +118,23 @@ public class Main {
                     System.out.println("Nhập địa chỉ nhà muốn xoá:");
                     String address = scanner1.nextLine();
                     House house = manager.findHouse(address);
-                    if (house!=null){
-                        if (manager.checkHouse(house)){
+                    if (house != null) {
+                        if (manager.checkHouse(house)) {
                             System.err.println("Nhà có Hộ gia đình đang sinh sống!");
-                             int choice1;
-                                while (true){
-                                    System.out.println("Nhấn 1: Nếu bạn vẫn muốn xoá: ");
-                                    System.out.println("Nhấn 2: Nếu bạn không muốn xoá: ");
-                                    try {
-                                        Scanner scanner = new Scanner(System.in);
-                                        choice1 = scanner.nextInt();
-                                        break;
+                            int choice1;
+                            while (true) {
+                                System.out.println("Nhấn 1: Nếu bạn vẫn muốn xoá: ");
+                                System.out.println("Nhấn 2: Nếu bạn không muốn xoá: ");
+                                try {
+                                    Scanner scanner = new Scanner(System.in);
+                                    choice1 = scanner.nextInt();
+                                    break;
 
-                                    }catch (Exception e){
-                                        System.err.println("Nhập vào một trong những lựa chọn phía trên,Mời bạn nhập lại!");
-                                    }
+                                } catch (Exception e) {
+                                    System.err.println("Nhập vào một trong những lựa chọn phía trên,Mời bạn nhập lại!");
                                 }
-                                switch (choice1){
+                            }
+                            switch (choice1) {
                                     case 1:
                                     {
                                         try {
@@ -143,12 +144,11 @@ public class Main {
                                         }
                                         break;
                                     }
-                                    case 2:
-                                    {
-                                        break;
-                                    }
+                                case 2: {
+                                    break;
                                 }
-                        }else {
+                            }
+                        } else {
                             try {
                                 manager.deleteHouse(house);
                             } catch (IOException e) {
@@ -177,7 +177,7 @@ public class Main {
                     break;
                 }
                 case 4: {
-                    List<House> houses1 =  manager.listHouseNoPeople();
+                    List<House> houses1 = manager.listHouseNoPeople();
                     Collections.sort(houses1, new ComparatorWithAddress());
                     manager.showHouse(houses1);
                     break;
@@ -188,15 +188,13 @@ public class Main {
                     manager.showAllHouse();
                     break;
                 }
-                case 6:
-                {
+                case 6: {
                     break;
                 }
             }
         }
         while (choice != 6);
     }
-
 
     //    Quản lý hộ dân
     public static void menuManagerHouseHoldr(TownManager manager) {
@@ -215,9 +213,9 @@ public class Main {
             try {
                 Scanner scanner = new Scanner(System.in);
                 choice = scanner.nextInt();
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println("Nhập vào một trong những lựa chọn phía trên,Mời bạn nhập lại!");
-                choice=0;
+                choice = 0;
             }
             switch (choice) {
                 case 1: {
@@ -255,28 +253,26 @@ public class Main {
                 }
                 case 2: {
                     List<House> houses = manager.listHousHavePeople();
-                    if (houses.size()>0){
+                    if (houses.size() > 0) {
                         manager.showHouseHoollds(houses);
-                    }
-                    else {
+                    } else {
                         System.err.println("\t\t\tHiện tại không có hộ nào quản lý trong khu phố");
                         System.out.println();
                     }
                     break;
                 }
-                case 3:
-                {
+                case 3: {
                     System.out.print("Nhập địa chỉ nhà có hộ gia đình chuyển đi: ");
                     Scanner scanner1 = new Scanner(System.in);
                     String address = scanner1.nextLine();
                     House house = manager.findHouse(address);
-                    if (manager.checkHouse(house)){
+                    if (manager.checkHouse(house)) {
                         try {
                             manager.deleteHouseHolds(house);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                    }else {
+                    } else {
                         System.err.println("Nhà Đang trống không có người sử dụng, Kiểm tra lại");
                     }
                     break;
@@ -341,119 +337,121 @@ public class Main {
                             }
 
                         }
-                    }else {
+                    } else {
                         System.out.println("Hiện tại nhà chưa có hộ dân nào sinh sống! Kiểm tra lại!");
                     }
                     break;
-                } case 6:
-                    {
-                        check = false;
+                }
+                case 6: {
+                    check = false;
                     break;
-                    }
+                }
             }
         } while (check);
 
     }
 
-
-//    Menu Quản lý Con người
-    public static void menuManagerPeople(TownManager manager){
+    //    Menu Quản lý Con người
+    public static void menuManagerPeople(TownManager manager) {
         int choice = 0;
-        while (choice!=4){
+        while (choice != 4) {
             System.out.println("__________Danh sách lựa chọn________");
             System.out.println("Enter 1: Danh sách người Dân Trong khu dân cư: ");
             System.out.println("Enter 2: Tìm thông tin người theo tên: ");
-            System.out.println("Enter 3: Danh sách người cùng tuổi");
-            System.out.println("Enter 4: Trở về Menu chính: ");
+//            System.out.println("Enter 3: Lấy danh sách người có cùng độ tuổi nhập vào: ");
+            System.out.println("Enter 3: Trở về Menu chính: ");
             System.out.println("Nhập vào lựa chọn của bạn: ");
             try {
                 Scanner scanner = new Scanner(System.in);
                 choice = scanner.nextInt();
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.err.println("Nhập vào một trong những lựa chọn phía trên,Mời bạn nhập lại!");
-                choice=0;
+                choice = 0;
             }
-            switch (choice){
-                case 1:
-                {
+            switch (choice) {
+                case 1: {
                     List<Person> personList = manager.getPersonInHouse();
-                    Collections.sort(personList,new ComparatorWithPerson());
+                    Collections.sort(personList, new ComparatorWithPerson());
                     manager.showPerson(personList);
                     break;
                 }
-                case 2:
-                {
+                case 2: {
                     Scanner scanner = new Scanner(System.in);
                     System.out.println("Nhập tên người cần lấy thông tìm: ");
                     String name = scanner.nextLine();
                     List<House> houses1 = manager.listHousHavePeople();
-                    if (houses1.size()>0){
+                    if (houses1.size() > 0) {
                         List<Person> personList = manager.getPersonInHouse();
-                        if (personList.size()>0){
-                            List<Person>personList1 = manager.getInforPersonByName(personList,name);
-                            if (personList1.size()>0){
-                                System.out.printf("\n\t\t\t\t_________%-60s","Thông tin người cần tìm________");
+                        if (personList.size() > 0) {
+                            List<Person> personList1 = manager.getInforPersonByName(personList, name);
+                            if (personList1.size() > 0) {
+
+                                Collections.sort(personList1, new ComparatorWithPerson());
+                                System.out.printf("\n\t\t\t\t_________%-60s", "Thông tin người cần tìm________");
                                 System.out.println();
-                                System.out.printf("\n\t\t\t\t%-30s %-40s","Địa chỉ","Thông tin");
-                                for (int i = 0; i<houses1.size();i++){
-                                    for (int j = 0; j< personList1.size();j++){
+                                System.out.printf("\n\t\t\t\t%-30s %-40s", "Địa chỉ", "Thông tin");
+                                for (int i = 0; i < houses1.size(); i++) {
+                                    for (int j = 0; j < personList1.size(); j++) {
                                         List<Person> personList2 = houses1.get(i).getPersonList();
-                                        if (personList2.contains(personList.get(j))){
+                                        if (personList2.contains(personList.get(j))) {
                                             String address = houses1.get(i).getAddress();
                                             Person person = personList.get(j);
-                                            System.out.printf("\n\t\t\t\t%-20s %-50s",address,person.toString());
+                                            System.out.printf("\n\t\t\t\t%-20s %-50s", address, person.toString());
 
                                         }
                                     }
                                 }
                                 System.out.println();
                                 System.out.println("\t\t\t\t\t______________________________");
-                                System.out.println() ;
-                            }else {
+                                System.out.println();
+                            } else {
                                 System.out.println("Người cần tìm không thuộc diện quản lý!");
                                 System.out.println();
                             }
-                        }else {
+                        } else {
                             System.out.println("Người cần tìm không thuộc diện quản lý!");
                             System.out.println();
                         }
-                    }else {
+                    } else {
                         System.out.println("Người cần tìm không thuộc diện quản lý!");
                         System.out.println();
                     }
                     break;
                 }
-                case 3:
-                {
-                    System.out.println("Nhập vào độ tuổi bạn muốn lấy danh sách: ");
-                    Scanner scanner = new Scanner(System.in);
-                    int age = scanner.nextInt();
-                    List<Person> personList =manager.getPersonInHouse();
-                    if (personList.size()>0){
-                        List<Person>personList1 = manager.getInforPersonByAge(personList,age);
-                        if (personList1.size()>0){
-                            System.out.println("\t\t\t\t\t_____Danh Sách người có cùng độ tuổi cần tìm_____");
-                            System.out.println();
-                            System.out.printf("\n\t\t\t\t%-20s %-50s","STT","Thông tin:");
-                            for (int i = 0 ; i< personList1.size();i++){
-                                Person person = personList1.get(i);
-                                System.out.printf("\n\t\t\t\t%-20s %-50s",(i+1),person.toString());
-                            }
-                        }else {
-                            System.out.println("Không có người có độ tuổi trên trong khu phố!");
-                        }
-                    }else {
-                        System.out.println("Không có người có độ tuổi trên trong khu phố!");
-                    }
-                    break;
-                }
-                case 4:
-                {
+//                case 3:
+//                {
+//                    System.out.println("Nhập vào độ tuổi bạn muốn lấy danh sách: ");
+//                    Scanner scanner = new Scanner(System.in);
+//                    int age = scanner.nextInt();
+//                    List<Person> personList =manager.getPersonInHouse();
+//                    if (personList.size()>0){
+//                        List<Person>personList1 = manager.getInforPersonByAge(personList,age);
+//                        if (personList1.size()>0){
+//
+//                            Collections.sort(personList1,new ComparatorWithPerson());
+//                            System.out.println("\t\t\t\t\t_____Danh Sách người có cùng độ tuổi cần tìm_____");
+//                            System.out.println();
+//                            System.out.printf("\n\t\t\t\t%-20s %-50s","STT","Thông tin:");
+//                            for (int i = 0 ; i< personList1.size();i++){
+//                                Person person = personList1.get(i);
+//                                System.out.printf("\n\t\t\t\t%-20s %-50s",(i+1),person.toString());
+//                            }
+//                        }else {
+//                            System.out.println("Không có người có độ tuổi trên trong khu phố!");
+//                        }
+//                    }else {
+//                        System.out.println("Không có người có độ tuổi trên trong khu phố!");
+//                    }
+//                    System.out.println();
+//                    break;
+//                }
+                case 3: {
                     break;
                 }
             }
         }
     }
+
 
     //    Tạo mới một nhà trống không người
     public static House createNewHouse() {
@@ -476,5 +474,49 @@ public class Main {
         String gender = scanner2.nextLine();
         Person person = new Person(name, age, gender);
         return person;
+    }
+
+    //
+    public void login(LoginManager loginManager) {
+        int choice;
+        do {
+            System.out.println("Nhập vào sự lựa chọn cửa bạn:");
+            System.out.println("Nhấn 1: Đăng ký tài khoản: ");
+            System.out.println("Nhấn 2: Đăng nhập: ");
+            System.out.println("Nhấn 3: Thoát: ");
+            Scanner scanner = new Scanner(System.in);
+            choice = scanner.nextInt();
+            switch (choice) {
+                case 1: {
+                    Login login = createNewAccount();
+                    loginManager.addAccount(login);
+                    break;
+                }
+                case 2: {
+                    Scanner scanner1 = new Scanner(System.in);
+                    Scanner scanner2 = new Scanner(System.in);
+                    System.out.println("Enter Account: ");
+                    String account = scanner1.nextLine();
+                    System.out.println("Enter password: ");
+                    break;
+                }
+                case 3: {
+                    break;
+                }
+            }
+        } while (choice != 3);
+    }
+
+    //    Tạo mới Một Account
+    public static Login createNewAccount() {
+        Scanner scanner = new Scanner(System.in);
+        Scanner scanner1 = new Scanner(System.in);
+        System.out.println("Nhập Tài khoản: ");
+        String account = scanner.nextLine();
+        System.out.println("Nhập Mật khẩu: ");
+        String pass = scanner1.nextLine();
+        Login login = new Login(account, pass);
+        return login;
+
     }
 }
