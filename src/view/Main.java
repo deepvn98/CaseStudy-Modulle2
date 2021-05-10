@@ -2,7 +2,6 @@ package view;
 
 import controller.LoginManager;
 import controller.TownManager;
-import model.CheckFormat;
 import model.House;
 import model.Login;
 import model.Person;
@@ -17,21 +16,25 @@ public class Main {
     public static void main(String[] args) {
         FileHouse fileHouse = FileHouse.getInstance();
         List<House> houses = new ArrayList<>();
-        try {
-            houses = fileHouse.readFile("house.dat");
+        List<Login>list = new ArrayList<>();
+        try {houses = fileHouse.readFile("house.dat");
+            list= fileHouse.readFileLogin("login.dat");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        LoginManager loginManager = LoginManager.getInstance("Sang",list);
         TownManager townManager = TownManager.getInstance("Sang", houses);
+        login(loginManager);
         menuAll(townManager);
     }
 
     //    Menu Quản lý chính
     public static void menuAll(TownManager manager) {
         int choice = 0;
-        while (choice != 3) {
+        while (choice != 4) {
             System.out.println("---------Danh sách lựa chọn________");
             System.out.println("Enter 1: Quản lý nhà ở: ");
             System.out.println("Enter 2: Quản lý Hộ Dân trong Khu phố: ");
@@ -284,8 +287,19 @@ public class Main {
                     House house = manager.findHouse(address);
                     if (manager.checkHouse(house)) {
                         System.out.println("Nhập số lượng người muốn thêm!");
-                        Scanner scanner3 = new Scanner(System.in);
-                        int putNumber = scanner3.nextInt();
+                        int putNumber;
+                        while (true){
+                            try {
+                                Scanner scanner3 = new Scanner(System.in);
+                                putNumber = scanner3.nextInt();
+                                if (putNumber<=0){
+                                    throw new Exception();
+                                }
+                                break;
+                            }catch (Exception e){
+                                System.out.println("số lượng nhập vào không được âm, và không được nhập chuỗi");
+                            }
+                        }
                         for (int i = 0; i < putNumber; i++) {
                             int serial = 1 + i;
                             System.out.println("Thông tin người thứ " + serial);
@@ -477,30 +491,55 @@ public class Main {
     }
 
     //
-    public void login(LoginManager loginManager) {
+    public static void login(LoginManager loginManager) {
         int choice;
         do {
+            System.out.println("_______Danh sách lựa chọn______");
             System.out.println("Nhập vào sự lựa chọn cửa bạn:");
             System.out.println("Nhấn 1: Đăng ký tài khoản: ");
             System.out.println("Nhấn 2: Đăng nhập: ");
             System.out.println("Nhấn 3: Thoát: ");
-            Scanner scanner = new Scanner(System.in);
-            choice = scanner.nextInt();
+
+            while (true){
+                try {Scanner scanner = new Scanner(System.in);
+                    choice = scanner.nextInt();
+                    break;
+                }catch (Exception e){
+                    System.out.println("Vui lòng nhập vào những lựa chọn phía trên!");
+                    choice = 0;
+                }
+            }
+
+
             switch (choice) {
                 case 1: {
                     Login login = createNewAccount();
-                    loginManager.addAccount(login);
+                    try {
+                        loginManager.addAccount(login);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 }
                 case 2: {
                     Scanner scanner1 = new Scanner(System.in);
-                    Scanner scanner2 = new Scanner(System.in);
                     System.out.println("Enter Account: ");
                     String account = scanner1.nextLine();
+                    Scanner scanner2 = new Scanner(System.in);
                     System.out.println("Enter password: ");
+                    String pass = scanner2.nextLine();
+                    Login login = new Login(account,pass);
+                    boolean check = loginManager.checkAccount(login);
+                    if (check){
+                        System.out.println("Đăng nhập thành công!");
+                        choice = 3;
+                    }else {
+                        System.out.println("Tài khoản hoặc mật khẩu của bạn sai, VUi lòng nhập lại!");
+                    }
                     break;
                 }
                 case 3: {
+                    System.exit(0);
                     break;
                 }
             }

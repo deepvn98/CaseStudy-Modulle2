@@ -2,6 +2,7 @@ package storage;
 
 
 import model.House;
+import model.Login;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -51,4 +52,41 @@ public class FileHouse {
         }
         return file;
     }
+
+    public File createNewFileLogin() throws IOException {
+        File file = new File("login.dat");
+        if (!file.exists()){
+            file.createNewFile();
+        }
+        return file;
+    }
+
+    public void writeFileLogin(String pathname,List<Login> list) throws IOException {
+        File file = new File(pathname);
+        if (!file.exists()){
+            file.createNewFile();
+        }
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        objectOutputStream.writeObject(list);
+        objectOutputStream.close();
+        fileOutputStream.close();
+    }
+
+    public List<Login> readFileLogin(String f) throws IOException, ClassNotFoundException {
+        File file = new File(f);
+        if (!file.exists()){
+            file.createNewFile();
+        }
+        if (file.length()>0){
+            FileInputStream fileInputStream = new FileInputStream(file);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            Object obj = objectInputStream.readObject();
+            List<Login> list = (List<Login>) obj;
+            return list;
+        }else {
+            return new ArrayList<>();
+        }
+    }
+
 }

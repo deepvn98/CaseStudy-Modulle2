@@ -1,7 +1,9 @@
 package controller;
 
 import model.Login;
+import storage.FileHouse;
 
+import java.io.IOException;
 import java.util.List;
 
 public class LoginManager {
@@ -17,10 +19,11 @@ public class LoginManager {
     private LoginManager() {
     }
 
-    public static LoginManager getInstance(String name, List<Login> list){
-        if (INSTANCE == null){
-            INSTANCE = new LoginManager(name,list);
-        }return INSTANCE;
+    public static LoginManager getInstance(String name, List<Login> list) {
+        if (INSTANCE == null) {
+            INSTANCE = new LoginManager(name, list);
+        }
+        return INSTANCE;
     }
 
     public String getName() {
@@ -39,17 +42,28 @@ public class LoginManager {
         this.list = list;
     }
 
-    public static LoginManager getINSTANCE() {
-        return INSTANCE;
-    }
-
     public static void setINSTANCE(LoginManager INSTANCE) {
         LoginManager.INSTANCE = INSTANCE;
     }
 
-    public void addAccount(Login login){
+    public void addAccount(Login login) throws IOException {
         list.add(login);
+        FileHouse fileHouse = FileHouse.getInstance();
+        fileHouse.writeFileLogin("login.dat",list);
         System.out.println("Đăng ký thành công");
     }
 
+    public boolean checkAccount(Login login) {
+        boolean check = false;
+        if (list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getAccount().equals(login.getAccount())) {
+                    if (list.get(i).getPass().equals(login.getPass())){
+                        check = true;
+                        return check;
+                    }
+                }
+            }
+        }return check;
+    }
 }
