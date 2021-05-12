@@ -552,30 +552,29 @@ public class Main {
                 int age = 0;
                 boolean check2 = true;
                 while (check2){
-
                     System.out.print("Nhập Age:");
                     try {
                         Scanner scanner1 = new Scanner(System.in);
                         age = scanner1.nextInt();
-                        if (age<=0){
-                            throw new Exception();
-                        }
-                        break;
                     }catch (Exception e){
                         System.out.println("Chỉ nhận vào số và lớn hơn số 0, mời bạn nhập lại!");
                     }
-                }
-                System.out.print("Nhập Gender:");
-                Scanner scanner2 = new Scanner(System.in);
-                String gender = scanner2.nextLine();
-                person = new Person(name, age, gender);
-                return person;
+                    boolean check3 = CheckFormat.CheckAge(age);
+                    if (check3){
+                        System.out.print("Nhập Gender:");
+                        Scanner scanner2 = new Scanner(System.in);
+                        String gender = scanner2.nextLine();
+                        person = new Person(name, age, gender);
+                        return person;
 
+                    }else {
+                        System.out.println("Nhập tuổi sai định dạng,Nời bạn nhập lại!");
+                    }
+                }
             } else {
                 System.out.println("Sai định dạng mời bạn nhập lại!");
                 check1 = true;
             }
-
         }
         return person;
     }
