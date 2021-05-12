@@ -4,7 +4,6 @@ import model.House;
 import model.Person;
 import storage.FileHouse;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +53,7 @@ public class TownManager {
         house.setHouseholder(name);
         house.setNumberOfPeople(number);
         personList.add(person);
+        System.out.println("Thêm thành công!");
         house.setPersonList(personList);
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile("house.dat",houses);
@@ -80,7 +80,6 @@ public class TownManager {
     }
 
     //    Xoá thành viên trong hộ
-
     public void deletePersonInHouse(House house, Person person) throws IOException {
         List<Person> personList = house.getPersonList();
         int size = personList.size();
@@ -101,6 +100,7 @@ public class TownManager {
     //    Thêm nhà Trống cần quản lý vào danh sách Nhà
     public void addHouse(House house) throws IOException {
         houses.add(house);
+        System.out.println(" Thêm mới thành công!");
         FileHouse fileHouse = FileHouse.getInstance();
         fileHouse.writeFile("house.dat",houses);
     }
@@ -149,7 +149,7 @@ public class TownManager {
     public List<House> listHousHavePeople() {
         List<House> houses1 = new ArrayList<>();
         for (int i = 0; i < houses.size(); i++) {
-            if (houses.get(i).getHouseholder() != null) {
+            if (houses.get(i).getNumberOfPeople()!=0) {
                 House house = houses.get(i);
                 houses1.add(house);
             }
@@ -190,18 +190,6 @@ public class TownManager {
             }
         }
         return null;
-    }
-
-//    Danh sách người có tuổi nhập vào từ bàn phím
-    public List<Person> getInforPersonByAge(List<Person> personList, int age){
-        List<Person> personList1 = new ArrayList<>();
-        for (int i = 0; i<personList.size();i++){
-            if (personList.get(i).getAge() == age){
-                     Person person = personList.get(i);
-                     personList1.add(person);
-            }
-        }
-        return personList1;
     }
 
     //    Kiểm tra nhà có người hay không?

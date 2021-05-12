@@ -15,9 +15,16 @@ public class CheckFormat {
         }
     }
 
-//    public static boolean CheckAge(int age){
-//        String regex = "^[0-9]{2}$";
-//        Pattern pattern = Pattern.compile(regex);
-////        Matcher matcher = pattern.matcher(age);
-//    }
+    public static boolean CheckAge(int age){
+        String age1 = String.valueOf(age);
+        String regex ="^[0-9]{2}$";
+//                "\d{1,2}"
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(age1);
+        if (matcher.find()){
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
