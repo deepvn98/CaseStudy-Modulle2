@@ -2,7 +2,7 @@ package controller;
 
 import model.House;
 import model.Person;
-import storage.FileHouse;
+import storage.FileManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,8 +55,9 @@ public class TownManager {
         personList.add(person);
         System.out.println("Thêm thành công!");
         house.setPersonList(personList);
-        FileHouse fileHouse = FileHouse.getInstance();
-        fileHouse.writeFile("house.dat",houses);
+//        System.out.println("Danh sách hộ dân mới được thêm"+house.toString());
+        FileManager fileManager = FileManager.getInstance();
+        fileManager.writeFile("house.dat",houses);
     }
 
     //Thêm thành viên vào hộ gia đình
@@ -65,8 +66,8 @@ public class TownManager {
         int number = house.getPersonList().size();
         house.setNumberOfPeople(number);
         System.out.println("Thêm thành công");
-        FileHouse fileHouse = FileHouse.getInstance();
-        fileHouse.writeFile("house.dat",houses);
+        FileManager fileManager = FileManager.getInstance();
+        fileManager.writeFile("house.dat",houses);
     }
 
     //    Xoá Hộ gia đình không còn thuộc diện quản lý
@@ -75,8 +76,8 @@ public class TownManager {
         house.setNumberOfPeople(0);
         house.setPersonList(null);
         System.err.println("Đã xoá");
-        FileHouse fileHouse = FileHouse.getInstance();
-        fileHouse.writeFile("house.dat",houses);
+        FileManager fileManager = FileManager.getInstance();
+        fileManager.writeFile("house.dat",houses);
     }
 
     //    Xoá thành viên trong hộ
@@ -90,8 +91,8 @@ public class TownManager {
                 int serial = 1 + i;
                 house.setNumberOfPeople(size - serial);
                 i--;
-                FileHouse fileHouse = FileHouse.getInstance();
-                fileHouse.writeFile("house.dat",houses);
+                FileManager fileManager = FileManager.getInstance();
+                fileManager.writeFile("house.dat",houses);
             }
         }
         System.err.println("Đã xoá!");
@@ -101,23 +102,23 @@ public class TownManager {
     public void addHouse(House house) throws IOException {
         houses.add(house);
         System.out.println(" Thêm mới thành công!");
-        FileHouse fileHouse = FileHouse.getInstance();
-        fileHouse.writeFile("house.dat",houses);
+        FileManager fileManager = FileManager.getInstance();
+        fileManager.writeFile("house.dat",houses);
     }
 
     //    Sửa địa chỉ nhà
     public void editHouseAddress(House house, String newAddress) throws IOException {
         house.setAddress(newAddress);
-        FileHouse fileHouse = FileHouse.getInstance();
-        fileHouse.writeFile("house.dat",houses);
+        FileManager fileManager = FileManager.getInstance();
+        fileManager.writeFile("house.dat",houses);
     }
 
     //    Delete house
     public void deleteHouse(House house) throws IOException {
         houses.remove(house);
         System.out.println("Đã xoá!");
-        FileHouse fileHouse = FileHouse.getInstance();
-        fileHouse.writeFile("house.dat",houses);
+        FileManager fileManager = FileManager.getInstance();
+        fileManager.writeFile("house.dat",houses);
     }
 
     //    Kiểm tra người này có ở trong nhà cho trước hay không? tìm theo tên, trả về người nếu có!

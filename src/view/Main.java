@@ -8,19 +8,19 @@ import model.Login;
 import model.Person;
 import storage.ComparatorWithAddress;
 import storage.ComparatorWithPerson;
-import storage.FileHouse;
+import storage.FileManager;
 
 import java.io.IOException;
 import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        FileHouse fileHouse = FileHouse.getInstance();
+        FileManager fileManager = FileManager.getInstance();
         List<House> houses = new ArrayList<>();
         List<Login> list = new ArrayList<>();
         try {
-            houses = fileHouse.readFile("house.dat");
-            list = fileHouse.readFileLogin("login.dat");
+            houses = fileManager.readFile("house.dat");
+            list = fileManager.readFileLogin("login.dat");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -56,11 +56,19 @@ public class Main {
 
             switch (choice) {
                 case 1: {
-                    Login login = createNewAccount();
-                    try {
-                        loginManager.addAccount(login);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    while (true){
+                        Login login = createNewAccount();
+                        boolean check = loginManager.checkAccount(login);
+                        if (check){
+                            System.out.println("Tài khoản đã tồn tại, mời bạn đang ký lại!");
+                        }else {
+                            try {
+                                loginManager.addAccount(login);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        }
                     }
                     break;
                 }
@@ -263,11 +271,11 @@ public class Main {
         boolean check = true;
         do {
             System.out.println("---------Danh sách lựa chọn________");
-            System.out.println("Enter 1: Nhập thông tin của Hộ dân mới chuyển đến: ");
-            System.out.println("Enter 2: Hiển thị danh sách hộ dân đang sinh sống: ");
-            System.out.println("Enter 3: Xoá Hộ gia đình không Còn thuộc diện quản lý");
-            System.out.println("Enter 4: Thêm thành viên vào hộ gia đình:");
-            System.out.println("Enter 5: Xoá Thành viên Trong hộ gia đình: ");
+            System.out.println("Enter 1: Nhập thông tin của Hộ dân mới: ");
+            System.out.println("Enter 2: Hiển thị danh sách hộ dân: ");
+            System.out.println("Enter 3: Xoá Hộ dân không Còn thuộc diện quản lý");
+            System.out.println("Enter 4: Thêm thành viên vào hộ:");
+            System.out.println("Enter 5: Xoá Thành viên khỏi Hộ: ");
             System.out.println("Enter 6: Trở về menu chính ");
             System.out.println("Nhập vào lựa chọn của bạn: ");
             try {
@@ -293,7 +301,6 @@ public class Main {
                             boolean check1 = CheckFormat.checkName(name1);
                             if (check1) {
                                 System.out.print("Số thành viên của hộ là: ");
-
                                 while (true) {
                                     try {
                                         Scanner scanner3 = new Scanner(System.in);

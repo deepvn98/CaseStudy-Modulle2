@@ -1,7 +1,7 @@
 package controller;
 
 import model.Login;
-import storage.FileHouse;
+import storage.FileManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -48,8 +48,8 @@ public class LoginManager {
 
     public void addAccount(Login login) throws IOException {
         list.add(login);
-        FileHouse fileHouse = FileHouse.getInstance();
-        fileHouse.writeFileLogin("login.dat",list);
+        FileManager fileManager = FileManager.getInstance();
+        fileManager.writeFileLogin("login.dat",list);
         System.out.println("Đăng ký thành công");
     }
 

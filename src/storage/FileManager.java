@@ -8,14 +8,14 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileHouse {
-    private static FileHouse INSTACE;
+public class FileManager {
+    private static FileManager INSTACE;
 
-    private FileHouse() {
+    private FileManager() {
     }
-    public static FileHouse getInstance(){
+    public static FileManager getInstance(){
         if (INSTACE == null){
-            INSTACE = new FileHouse();
+            INSTACE = new FileManager();
         }return INSTACE;
     }
     public void writeFile(String pathname,List<House> houses) throws IOException {
